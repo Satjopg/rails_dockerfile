@@ -8,7 +8,7 @@ ENV RUNTIME_PACKAGES = "ruby ruby-irb ruby-json ruby-rake ruby-bigdecimal ruby-i
 RUN mkdir -p /usr/src/my_app
 WORKDIR /usr/src/my_app
 
-RUN apk add --update --no-cache RUNTIME_PACKAGES
+RUN apk add --update --no-cache $RUNTIME_PACKAGES
 
 COPY Gemfile /usr/src/my_app
 COPY Gemfile.lock /usr/src/my_app
