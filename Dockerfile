@@ -14,6 +14,7 @@ RUN apk add --update\
     --virtual build-dependencies\
     --no-cache\
     build-base sqlite-dev && \
+    gem install --system && \
     gem install bundler --no-document && \
     bundle config build.nokogiri --use-system-libraries && \
     bundle install --without development test && \
