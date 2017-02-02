@@ -2,9 +2,6 @@ From alpine:latest
 
 MAINTAINER Satoru Murakami
 
-ENV RUNTIME_PACKAGES = "ruby ruby-irb ruby-json ruby-rake ruby-bigdecimal ruby-io-console ruby-rdoc ruby-dev libxml2-dev libxslt-dev sqlite tzdata nodejs ca-certificates"\
-    DEV_PACKEGES = "build-base sqlite-dev"
-
 RUN mkdir -p /usr/src/my_app
 WORKDIR /usr/src/my_app
 
@@ -16,7 +13,7 @@ COPY Gemfile.lock /usr/src/my_app
 RUN apk add --update\
     --virtual build-dependencies\
     --no-cache\
-    $DEV_PACKAGES && \
+    build-base sqlite-dev && \
     gem install bundler --no-document && \
     bundle config build.nokogiri --use-system-libraries && \
     bundle install --without development test && \
