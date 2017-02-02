@@ -2,7 +2,7 @@ From alpine:latest
 
 MAINTAINER Satoru Murakami
 
-ENV RUNTIME_PACKAGES = "ruby ruby-irb ruby-json ruby-rake ruby-bigdecimal ruby-io-console ruby-rdoc ruby-dev libxml2-dev libxslt-dev sqlite tzdata nodejs ca-certificates"\
+ENV RUNTIME_PACKAGES = ruby ruby-irb ruby-json ruby-rake ruby-bigdecimal ruby-io-console ruby-rdoc ruby-dev libxml2-dev libxslt-dev sqlite tzdata nodejs ca-certificates\
     DEV_PACKEGES = "build-base sqlite-dev"
 
 RUN mkdir -p /usr/src/my_app
