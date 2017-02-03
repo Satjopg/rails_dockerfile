@@ -2,26 +2,20 @@ From alpine:latest
 
 MAINTAINER Satoru Murakami
 
-RUN mkdir -p /usr/src/my_app
-WORKDIR /usr/src/my_app
+ENV RUNTIME_PACKAGES="tzdata nodejs ca-certificates" \
+    RUBY_PACKAGES="ruby ruby-rdoc ruby-io-console ruby-irb ruby-json ruby-rake ruby-bigdecimal" \
+    DEV_PACKAGES="build-base sqlite-dev libxml2-dev libxslt-dev libffi-dev ruby-dev"
 
-RUN apk add --update --no-cache ruby ruby-irb ruby-json ruby-rake ruby-bigdecimal ruby-io-console ruby-rdoc ruby-dev libxml2-dev libxslt-dev sqlite tzdata nodejs ca-certificates
+RUN apk add --update --upgrade --no-cache $RUNTIME_PACKAGES $RUBY_PACKAGES
 
-COPY Gemfile /usr/src/my_app
-COPY Gemfile.lock /usr/src/my_app
-
-RUN apk add --update\
-    --virtual build-dependencies\
-    --no-cache\
-    build-base sqlite-dev && \
-    gem update --system && \
-    gem install bundler --no-document && \
+RUN apk add --update --virtual build-dependencies --no-cache $DEV_PACKAGES && \
+    gem install -N bundler --no-document && \
+    gem install -N nokogiri -- --use-system-libraries && \
+    gem install -N ffi -- --use-system-libraries && \
+    gem install -N rails && \
     bundle config build.nokogiri --use-system-libraries && \
-    bundle install --without development test && \
     apk del build-dependencies
 
-COPY . .
+EXPOSE 3000
 
-RUN rails assets:precompile RAILS_ENV=production
-
-CMD rails s -p 3000 -b '0.0.0.0'
+CMD ["/bin/sh"]
